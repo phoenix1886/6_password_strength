@@ -1,4 +1,4 @@
-"""Password Strength Evaluator
+"""Password Strength Calculator
 
 Evaluate password strength by the next algorithm (1-very weak, 10-max strength)
 1. strength = 10 (maximum)
