@@ -26,7 +26,7 @@ Evaluates password strength by the next algorithm (1-very weak, 10-max strength)
 7. strength = 1 if password in the blacklist (searching in './blacklist/popular10000pass.txt')
 
 ## How to use (Unix terminal)
-```bash
+```
 $ python password_strength.py 
 Type the password to evaluate: ********
 -25% PENALTY: uppercase symbols not found!!!
