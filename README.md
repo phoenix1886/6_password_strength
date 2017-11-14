@@ -17,8 +17,11 @@ Evaluates password strength by the next algorithm (1-very weak, 10-max strength)
 1. strength = 10 (maximum)
 2. strength *= length(password) / 12
 3. strength *= ( 1/4 if uppercase symbols found
+
                 +1/4 if lowercase symbols found
+                
                 +1/4 if digits found
+                
                 +1/4 if punctuation symbols found )
 4. strength *= 0.75 if names used (searching in './blacklist/names.txt')
 5. strength *= 0.75 if surnames used (searching in './blacklist/surnames.txt')
