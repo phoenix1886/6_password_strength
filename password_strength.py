@@ -5,6 +5,7 @@ from string import ascii_uppercase
 from string import punctuation
 from string import digits
 
+
 def is_in_blacklist(password):
 
     path_file = './blacklist/popular10000pass.txt'
@@ -33,7 +34,7 @@ def contains_words(password, words_list_path):
         print('File not found path:' + words_list_path)
 
 
-def variety_of_symbols(password, print_details):
+def variety_of_symbols(password, print_details=False):
 
     types_of_symbols = {'uppercase': ascii_uppercase,
                         'lowercase': ascii_lowercase,
@@ -58,8 +59,9 @@ def get_password_strength(password, print_details=False):
                       'surnames': './blacklist/surnames.txt',
                       'english words': './blacklist/words.txt'}
 
-    if is_in_blacklist(password) and print_details:
-        print('Your password is in black list!')
+    if is_in_blacklist(password):
+        if print_details:
+            print('Your password is in black list!')
         return 1
     starting_score = 10
 
@@ -77,7 +79,7 @@ def get_password_strength(password, print_details=False):
             penalty_multiplier = 0.75
             starting_score *= penalty_multiplier
             if print_details:
-                print('-25% PENALTY: password shouldn\'t contain '+ key)
+                print('-25% PENALTY: password shouldn\'t contain ' + key)
 
     min_score = 1
     max_score = 10
@@ -85,6 +87,7 @@ def get_password_strength(password, print_details=False):
     starting_score = min(starting_score, max_score)
 
     return starting_score
+
 
 if __name__ == '__main__':
     password = getpass.getpass(prompt="Type the password to evaluate:")
