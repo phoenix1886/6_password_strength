@@ -5,14 +5,7 @@ from string import ascii_uppercase
 from string import punctuation
 from string import digits
 
-
 def is_in_blacklist(password):
-    """ Checks if password is in "10k Most Popular Passwords" list.
-
-    :param password: str.
-    :return bool.
-    :exception FileNotFoundError.
-    """
 
     path_file = './blacklist/popular10000pass.txt'
     try:
@@ -26,13 +19,7 @@ def is_in_blacklist(password):
 
 
 def contains_words(password, words_list_path):
-    """Checks if ecglish words, names or surnames are used in password.
 
-    :param password: str.
-    :param words_list_path: str.
-    :return bool.
-    :exception FileNotFounError.
-    """
     password = password.lower()
     try:
         with open(words_list_path) as black_list:
@@ -47,12 +34,6 @@ def contains_words(password, words_list_path):
 
 
 def variety_of_symbols(password, print_details):
-    """Calculates the percentage of symbol types used (out of 4 types).
-
-    :param password: str.
-    :param print_details: bool: to print details in console.
-    :return: float: from 0.25 to 1, depending on types of symbols used.
-    """
 
     types_of_symbols = {'uppercase': ascii_uppercase,
                         'lowercase': ascii_lowercase,
@@ -72,12 +53,7 @@ def variety_of_symbols(password, print_details):
 
 
 def get_password_strength(password, print_details=False):
-    """Calculates password strength from 1 (very weak) to 10 (very strong).
 
-    :param password: str.
-    :param print_details: bool: True for details printing in console.
-    :return: float: from 1 (very weak) to 10 (very strong).
-    """
     word_list_path = {'names': './blacklist/names.txt',
                       'surnames': './blacklist/surnames.txt',
                       'english words': './blacklist/words.txt'}
@@ -111,10 +87,6 @@ def get_password_strength(password, print_details=False):
     return starting_score
 
 if __name__ == '__main__':
-    try:
-        password = getpass.getpass(prompt="Type the password to evaluate:")
-    except Exception as err:
-        print('ERROR:', err)
-
+    password = getpass.getpass(prompt="Type the password to evaluate:")
     print("The strength of the password: {:.1f}"
           .format(get_password_strength(password, True)))
