@@ -38,9 +38,8 @@ def contains_words(password, words_list_path):
         with open(words_list_path) as black_list:
             for word in black_list:
                 word = word.rstrip().lower()
-                """small words (less than 4) doesn't count as can be found
-                even in a random symbol combinations"""
-                if len(word) > 3 and word in password:
+                min_length_of_word = 3
+                if len(word) > min_length_of_word and word in password:
                     return True
             return False
     except FileNotFoundError:
@@ -93,18 +92,21 @@ def get_password_strength(password, print_details=False):
 
     starting_score *= variety_of_symbols(password, print_details)
 
-    if print_details and len(password) < 12:
+    if print_details and len(password) < recommended_length:
         print('{:.0f}% PENALTY: minimum 12 charecters length recommended.'
-              .format((len(password)/12 - 1)*100), )
+              .format((len(password)/recommended_length - 1)*100), )
 
     for key, word_path in word_list_path.items():
         if contains_words(password, word_path):
-            starting_score *= 0.75
+            penalty_multiplier = 0.75
+            starting_score *= penalty_multiplier
             if print_details:
                 print('-25% PENALTY: password shouldn\'t contain '+ key)
 
-    starting_score = max(starting_score, 1)
-    starting_score = min(starting_score, 10)
+    min_score = 1
+    max_score = 10
+    starting_score = max(starting_score, min_score)
+    starting_score = min(starting_score, max_score)
 
     return starting_score
 
