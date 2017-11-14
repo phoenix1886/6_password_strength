@@ -1,17 +1,4 @@
-"""Password Strength Calculator
-
-Evaluate password strength by the next algorithm (1-very weak, 10-max strength)
-1. strength = 10 (maximum)
-2. strength *= length(password) / 12
-3. strength *= ( 1/4 if uppercase symbols found
-                +1/4 if lowercase symbols found
-                +1/4 if digits found
-                +1/4 if punctuation symbols found )
-4. strength *= 0.75 if names used (searching in './blacklist/names.txt')
-5. strength *= 0.75 if surnames used (searching in './blacklist/surnames.txt')
-6. strength *= 0.75 if english words used (searching in './blacklist/names.txt')
-7. strength = 1 if password in the blacklist (searching in './blacklist/popular10000pass.txt')
-"""
+import getpass
 
 from string import ascii_lowercase
 from string import ascii_uppercase
@@ -54,7 +41,6 @@ def contains_words(password, words_list_path):
                 """small words (less than 4) doesn't count as can be found
                 even in a random symbol combinations"""
                 if len(word) > 3 and word in password:
-                    print(word)
                     return True
             return False
     except FileNotFoundError:
@@ -98,15 +84,13 @@ def get_password_strength(password, print_details=False):
                       'english words': './blacklist/words.txt'}
 
     if is_in_blacklist(password) and print_details:
-        print('!!!password is in black list!!!')
+        print('Your password is in black list!')
         return 1
     starting_score = 10
 
-    """password minimum length of 12 recommended."""
-    starting_score *= len(password) / 12
+    recommended_length = 12
+    starting_score *= len(password) / recommended_length
 
-    """using all types of symbols recommended
-    (lowercase, uppercase, digits, punctuations)."""
     starting_score *= variety_of_symbols(password, print_details)
 
     if print_details and len(password) < 12:
@@ -125,4 +109,10 @@ def get_password_strength(password, print_details=False):
     return starting_score
 
 if __name__ == '__main__':
-    print(contains_words('!234asdsgd', './blacklist/names.txt' ))
+    try:
+        password = getpass.getpass(prompt="Type the password to evaluate:")
+    except Exception as err:
+        print('ERROR:', err)
+
+    print("The strength of the password: {:.1f}"
+          .format(get_password_strength(password, True)))
