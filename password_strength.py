@@ -52,7 +52,7 @@ def calc_penalty_for_undesired_word_used(password, map_of_word_lists):
     return penalty
 
 
-def is_in_stop_list_map(password, map_of_word_lists):
+def is_in_stop_lists(password, map_of_word_lists):
 
     stop_list_names = ['pop10000pass', 'keyboard combination']
     password = password.lower()
@@ -68,7 +68,7 @@ def get_password_strength(password, map_of_word_lists):
     min_possible_strength_score = 1
     max_possible_strength_score = 10
 
-    if is_in_stop_list_map(password, map_of_word_lists):
+    if is_in_stop_lists(password, map_of_word_lists):
         return min_possible_strength_score
 
     strength_score = max_possible_strength_score
