@@ -57,8 +57,8 @@ def is_in_stop_lists(password, map_of_word_lists):
     stop_list_names = ['pop10000pass', 'keyboard combination']
     password = password.lower()
 
-    for name_of_stop_list, stop_list in map_of_word_lists.items():
-        if name_of_stop_list in stop_list_names and password in stop_list:
+    for name_of_list, stop_list in map_of_word_lists.items():
+        if name_of_list in stop_list_names and password in stop_list:
             return True
 
     return False
