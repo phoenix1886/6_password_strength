@@ -23,7 +23,7 @@ Evaluates password strength by the next algorithm (1-very weak, 10-max strength)
 4. strength *= 0.75 if names used (searching in './blacklist/names.txt')
 5. strength *= 0.75 if surnames used (searching in './blacklist/surnames.txt')
 6. strength *= 0.75 if english words used (searching in './blacklist/names.txt')
-7. strength = 1 if password in the blacklist (searching in './blacklist/popular10000pass.txt')
+7. strength = 1 if password in the blacklist (searching in './blacklist/popular10000pass.txt' or in './blacklist/keyboard_comb.txt')
 
 ## How to use (Unix terminal)
 ```
