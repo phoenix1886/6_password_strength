@@ -5,8 +5,18 @@ from string import ascii_uppercase
 from string import punctuation
 from string import digits
 
-from blacklist import load_undesired_word_map
-from blacklist import load_stop_list_map
+
+def load_word_list(path):
+
+    word_list_for_output = []
+    try:
+        with open(path) as words_list:
+            for word in words_list:
+                word_list_for_output.append(word.rstrip().lower())
+    except FileNotFoundError:
+        raise FileNotFoundError('File: {} not found.'.format(path))
+
+    return word_list_for_output
 
 
 def calc_penalty_for_symbol_types_used(password):
@@ -25,37 +35,40 @@ def calc_penalty_for_symbol_types_used(password):
     return types_used / len(types_of_symbols_map)
 
 
-def calc_penalty_for_undesired_word_used(password, undesired_word_map):
+def calc_penalty_for_undesired_word_used(password, map_of_word_lists):
 
+    undesired_word_list_names = ['names', 'surnames', 'english words']
     password = password.lower()
     penalty = 1
     min_reasonable_word_length = 3
     penalty_for_undesired_word_use = 0.75
-    for word_list in undesired_word_map.values():
-        for word in word_list:
-            if len(word) > min_reasonable_word_length and word in password:
-                penalty *= penalty_for_undesired_word_use
-                break
+    for name, word_list in map_of_word_lists.items():
+        if name in undesired_word_list_names:
+            for word in word_list:
+                if len(word) > min_reasonable_word_length and word in password:
+                    penalty *= penalty_for_undesired_word_use
+                    break
 
     return penalty
 
 
-def is_in_stop_list_map(password, stop_list_map):
+def is_in_stop_list_map(password, map_of_word_lists):
 
+    stop_list_names = ['pop10000pass', 'keyboard combination']
     password = password.lower()
-    for stop_list in stop_list_map.values():
+    for stop_list in map_of_word_lists.values():
         if password in stop_list:
             return True
 
     return False
 
 
-def get_password_strength(password, undesired_word_map, stop_list_map):
+def get_password_strength(password, map_of_word_lists):
 
     min_possible_strength_score = 1
     max_possible_strength_score = 10
 
-    if is_in_stop_list_map(password, stop_list_map):
+    if is_in_stop_list_map(password, map_of_word_lists):
         return min_possible_strength_score
 
     strength_score = max_possible_strength_score
@@ -65,7 +78,7 @@ def get_password_strength(password, undesired_word_map, stop_list_map):
 
     strength_score *= calc_penalty_for_symbol_types_used(password)
 
-    strength_score *= calc_penalty_for_undesired_word_used(password, undesired_word_map)
+    strength_score *= calc_penalty_for_undesired_word_used(password, map_of_word_lists)
 
     strength_score = max(strength_score, min_possible_strength_score)
     strength_score = min(strength_score, max_possible_strength_score)
@@ -75,13 +88,18 @@ def get_password_strength(password, undesired_word_map, stop_list_map):
 
 if __name__ == '__main__':
 
-    undesired_word_map = load_undesired_word_map()
-    stop_list_map = load_stop_list_map()
+    file_paths = {'names': './blacklist/names.txt',
+                  'surnames': './blacklist/surnames.txt',
+                  'english words': './blacklist/words.txt',
+                  'pop10000pass': './blacklist/popular10000pass.txt',
+                  'keyboard combination': './blacklist/keyboard_comb.txt'}
+
+    map_of_word_lists = {name: load_word_list(path) for name, path in file_paths.items()}
 
     password = getpass.getpass(prompt="Type the password to evaluate: ")
 
     password_strength = get_password_strength(
-        password, undesired_word_map, stop_list_map)
+        password, map_of_word_lists)
 
     print("The strength of the password: {:.1f}"
           .format(password_strength))
