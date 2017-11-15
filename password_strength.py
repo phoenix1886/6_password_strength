@@ -19,7 +19,7 @@ def load_undesired_word_map():
 def load_stop_list_map():
 
     map_of_stop_list_path = {'popular 10000 passwords': './blacklist/popular10000pass.txt',
-                         'keyboard combination': './blacklist/keyboard_comb.txt'}
+                             'keyboard combination': './blacklist/keyboard_comb.txt'}
     stop_list_map = load_word_map_using_path_map(map_of_stop_list_path)
 
     return stop_list_map
