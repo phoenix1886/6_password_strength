@@ -6,6 +6,25 @@ from string import punctuation
 from string import digits
 
 
+def load_undesired_word_map():
+
+    map_of_undesired_words_paths = {'names': './blacklist/names.txt',
+                                    'surnames': './blacklist/surnames.txt',
+                                    'english words': './blacklist/words.txt'}
+    undesired_word_map = load_word_map_using_path_map(map_of_undesired_words_paths)
+
+    return undesired_word_map
+
+
+def load_stop_list_map():
+
+    map_of_stop_list_path = {'popular 10000 passwords': './blacklist/popular10000pass.txt',
+                         'keyboard combination': './blacklist/keyboard_comb.txt'}
+    stop_list_map = load_word_map_using_path_map(map_of_stop_list_path)
+
+    return stop_list_map
+
+
 def load_word_map_using_path_map(path_map):
 
     word_map = {}
@@ -94,15 +113,8 @@ def get_password_strength(password, undesired_word_map, stop_list_map):
 
 if __name__ == '__main__':
 
-    map_of_undesired_words_paths = {'names': './blacklist/names.txt',
-                                    'surnames': './blacklist/surnames.txt',
-                                    'english words': './blacklist/words.txt'}
-
-    map_of_stop_list_path = {'popular 10000 passwords': './blacklist/popular10000pass.txt',
-                             'keyboard combination': './blacklist/keyboard_comb.txt'}
-
-    undesired_word_map = load_word_map_using_path_map(map_of_undesired_words_paths)
-    stop_list_map = load_word_map_using_path_map(map_of_stop_list_path)
+    undesired_word_map = load_undesired_word_map()
+    stop_list_map = load_stop_list_map()
 
     password = getpass.getpass(prompt="Type the password to evaluate: ")
 

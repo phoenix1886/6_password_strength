@@ -1,22 +1,22 @@
 import unittest
 
-from password_strength import *
+from password_strength import load_undesired_word_map
+from password_strength import load_stop_list_map
+from password_strength import is_in_stop_list_map
+from password_strength import calc_penalty_for_undesired_word_used
+from password_strength import calc_penalty_for_symbol_types_used
+from password_strength import get_password_strength
 
 
 class PasswordStrengthTestCase(unittest.TestCase):
 
     def setUp(self):
-        map_of_undesired_words_paths = {'names': './blacklist/names.txt',
-                                    'surnames': './blacklist/surnames.txt',
-                                    'english words': './blacklist/words.txt'}
 
-        map_of_stop_list_path = {'popular 10000 passwords': './blacklist/popular10000pass.txt',
-                             'keyboard combination': './blacklist/keyboard_comb.txt'}
-
-        self.undesired_word_map = load_word_map_using_path_map(map_of_undesired_words_paths)
-        self.stop_list_map = load_word_map_using_path_map(map_of_stop_list_path)
+        self.undesired_word_map = load_undesired_word_map()
+        self.stop_list_map = load_stop_list_map()
 
     def test_is_in_stop_list_map(self):
+
         self.assertTrue(is_in_stop_list_map('12345', self.stop_list_map))
         self.assertFalse(is_in_stop_list_map('afFgsS123131', self.stop_list_map))
 
