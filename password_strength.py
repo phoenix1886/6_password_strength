@@ -8,46 +8,58 @@ from string import digits
 PATHS_OF_UNDESIRED_WORDS_TO_USE = {'names': './blacklist/names.txt',
                                    'surnames': './blacklist/surnames.txt',
                                    'english words': './blacklist/words.txt'}
+PATHS_OF_STOP_LISTS = ['./blacklist/popular10000pass.txt']
+
+
+def get_word_list_from_file(file_path):
+
+    word_list_for_output = []
+    try:
+        with open(file_path) as words_list:
+            for word in words_list:
+                word_list_for_output.append(word.rstrip().lower())
+    except FileNotFoundError:
+        print('File not found path: {}'.format(file_path))
+
+    return word_list_for_output
+
 
 def is_in_stop_list(password):
 
-    path_of_stop_list = './blacklist/popular10000pass.txt'
-    try:
-        with open(path_of_stop_list) as black_list:
-            for word in black_list:
-                if password == word.rstrip():
-                    return True
-            return False
-    except FileNotFoundError:
-        print('File not found path: {}'.format(path_of_stop_list))
+    password = password.lower()
+    stop_list = []
+
+    for path in PATHS_OF_STOP_LISTS:
+        stop_list.extend(get_word_list_from_file(path))
+
+    for word in stop_list:
+        if password == word.rstrip():
+            return True
+    return False
 
 
-def contains_undesired_words(password, path_of_undesired_words_list):
+def contains_undesired_words(password, path_of_undesired_word_list):
 
     password = password.lower()
-    try:
-        with open(path_of_undesired_words_list) as stop_list:
-            for word in stop_list:
-                word = word.rstrip().lower()
-                min_reasonable_length_of_word = 3
-                if len(word) > min_reasonable_length_of_word and \
-                                word in password:
-                    return True
-            return False
-    except FileNotFoundError:
-        print('File not found path: {}'.format(path_of_undesired_words_list))
+    undesired_word_list = get_word_list_from_file(path_of_undesired_word_list)
+
+    for word in undesired_word_list:
+        min_reasonable_length_of_word = 3
+        if len(word) > min_reasonable_length_of_word and word in password:
+            return True
+    return False
 
 
-def proportion_of_symbol_types_used(password):
+def get_proportion_of_symbol_types_used(password):
 
     types_of_symbols_map = {'uppercase': ascii_uppercase,
                             'lowercase': ascii_lowercase,
                             'digits': digits,
                             'punctuation': punctuation}
     types_of_symbols_found = 0
-    for symbol_types, type_list in types_of_symbols_map.items():
+    for symbol_list in types_of_symbols_map.values():
         for char in password:
-            if char in type_list:
+            if char in symbol_list:
                 types_of_symbols_found += 1
                 break
 
@@ -68,7 +80,7 @@ def get_password_strength(password):
     recommended_password_length = 12
     strength_score *= len(password) / recommended_password_length
 
-    strength_score *= proportion_of_symbol_types_used(password)
+    strength_score *= get_proportion_of_symbol_types_used(password)
 
     for path_of_undesired_word_list in PATHS_OF_UNDESIRED_WORDS_TO_USE.values():
         if contains_undesired_words(password, path_of_undesired_word_list):

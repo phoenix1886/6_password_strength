@@ -3,7 +3,7 @@ import unittest
 from password_strength import PATHS_OF_UNDESIRED_WORDS_TO_USE
 from password_strength import is_in_stop_list
 from password_strength import contains_undesired_words
-from password_strength import proportion_of_symbol_types_used
+from password_strength import get_proportion_of_symbol_types_used
 from password_strength import get_password_strength
 
 
@@ -37,10 +37,10 @@ class PasswordStrengthTestCase(unittest.TestCase):
                                      PATHS_OF_UNDESIRED_WORDS_TO_USE['english words']))
 
     def test_proportion_of_symbol_types_used(self):
-        self.assertEqual(proportion_of_symbol_types_used('password'), 0.25)
-        self.assertEqual(proportion_of_symbol_types_used('Password'), 0.5)
-        self.assertEqual(proportion_of_symbol_types_used('Password123'), 0.75)
-        self.assertEqual(proportion_of_symbol_types_used('Password123!@++'), 1)
+        self.assertEqual(get_proportion_of_symbol_types_used('password'), 0.25)
+        self.assertEqual(get_proportion_of_symbol_types_used('Password'), 0.5)
+        self.assertEqual(get_proportion_of_symbol_types_used('Password123'), 0.75)
+        self.assertEqual(get_proportion_of_symbol_types_used('Password123!@++'), 1)
 
     def test_get_password_strength(self):
         self.assertEqual(get_password_strength('1asdgjHHm9++!2dd'), 10)
