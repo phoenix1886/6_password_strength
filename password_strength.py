@@ -61,6 +61,7 @@ def calc_penalty_for_undesired_word_used(password, undesired_word_map):
 
 def is_in_stop_list_map(password, stop_list_map):
 
+    password = password.lower()
     for stop_list in stop_list_map.values():
         if password in stop_list:
             return True
