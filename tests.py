@@ -1,7 +1,8 @@
 import unittest
 
-from password_strength import load_undesired_word_map
-from password_strength import load_stop_list_map
+from blacklist import load_undesired_word_map
+from blacklist import load_stop_list_map
+
 from password_strength import is_in_stop_list_map
 from password_strength import calc_penalty_for_undesired_word_used
 from password_strength import calc_penalty_for_symbol_types_used
