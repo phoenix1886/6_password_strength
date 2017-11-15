@@ -29,9 +29,6 @@ Evaluates password strength by the next algorithm (1-very weak, 10-max strength)
 ```
 $ python password_strength.py
 Type the password to evaluate: ********
--25% PENALTY: uppercase symbols not found!!!
--8% PENALTY: minimum 12 charecters length recommended.
--25% PENALTY: password shouldn't contain english words
 The strength of the password: 5.2
 ```
 
